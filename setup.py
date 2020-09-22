@@ -6,6 +6,7 @@
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from distutils.command.build import build as build_orig
+import pathlib
 
 #===============================================================================
 
@@ -23,13 +24,14 @@ ext_modules = [
 
 # Preinstall numpy
 from setuptools import dist
-dist.Distribution().fetch_build_eggs(['numpy>=1.10'])
+dist.Distribution().fetch_build_eggs(['numpy<1.19.0,>=1.16.0'])
 import numpy as np
 
 def requirements():
 	with open('requirements.txt', 'r') as content:
 		return content.readlines()
 
+cwd = pathlib.Path(__file__).parent.absolute()
 #===============================================================================
 
 setup(name='gryffin',
@@ -47,8 +49,8 @@ setup(name='gryffin',
 	],
 	url='https://github.com/aspuru-guzik-group/gryffin',
 	author='Florian Hase',
-	packages=find_packages('./src/'),
-	package_dir={'': 'src'},
+	packages = ['gryffin'],
+	package_dir  = {"": "src"},
 	zip_safe=False,
 	ext_modules=ext_modules,
 	tests_require=['pytest'],
